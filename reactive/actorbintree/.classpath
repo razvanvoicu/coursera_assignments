@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/scala"/>
+	<classpathentry kind="src" path="src/test/scala"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/forcomp/lib_managed/jars/org.scala-lang/scala-compiler/scala-compiler-2.11.5.jar"/>
+	<classpathentry kind="lib" path="/Applications/eclipse-scala/plugins/org.scala-lang.scala-library_2.11.6.v20150224-172222-092690e7bf.jar"/>
+	<classpathentry kind="lib" path="/Applications/eclipse-scala/plugins/org.scala-lang.scala-reflect_2.11.6.v20150224-172222-092690e7bf.jar"/>
+	<classpathentry kind="lib" path="/Applications/eclipse-scala/plugins/org.scala-lang.scala-actors_2.11.6.v20150224-172222-092690e7bf.jar"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/streams/lib_managed/jars/com.typesafe.akka/akka-actor_2.11/akka-actor_2.11-2.3.9.jar"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/streams/lib_managed/bundles/org.scalatest/scalatest_2.11/scalatest_2.11-2.2.4.jar"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/streams/lib_managed/jars/com.typesafe.akka/akka-testkit_2.11/akka-testkit_2.11-2.3.9.jar"/>
+	<classpathentry kind="lib" path="/Users/r/.ivy2/cache/ch.epfl.lamp/scala-grading-runtime_2.11/jars/scala-grading-runtime_2.11-0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/r/.ivy2/cache/net.databinder.dispatch/dispatch-core_2.11/jars/dispatch-core_2.11-0.11.0.jar"/>
+	<classpathentry kind="lib" path="/Users/r/.ivy2/cache/com.typesafe.akka/akka-persistence-experimental_2.11/jars/akka-persistence-experimental_2.11-2.3.9.jar"/>
+	<classpathentry kind="lib" path="/Users/r/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.8/sbt-0.13.8.jar"/>
+	<classpathentry kind="lib" path="/Users/r/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.8/compiler-interface-bin_2.10.4/compiler-interface-bin-0.13.8.jar"/>
+	<classpathentry kind="lib" path="/Users/r/.sbt/boot/scala-2.10.4/org.scala-sbt/sbt/0.13.8/compiler-integration-0.13.8.jar"/>
+	<classpathentry kind="output" path="target/scala-2.11/test-classes"/>
+</classpath>

@@ -1,0 +1,4 @@
+Solution to Assignment 1 of Coursera’s “Principles of Reactive Programming in Scala”, 2nd offering.
+
+https://class.coursera.org/reactive-002/assignment/view?assignment_id=5
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" output="target/scala-2.11/classes" path="src/main/scala"/>
+	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="src/test/scala"/>
+	<classpathentry kind="lib" path="lib/cafesat_2.11-0.01.jar"/>
+	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/forcomp/lib_managed/jars/org.scala-sbt/test-interface/test-interface-1.0.jar"/>
+	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/forcomp/lib_managed/bundles/org.scalatest/scalatest_2.11/scalatest_2.11-2.2.4.jar"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/forcomp/lib_managed/jars/junit/junit/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="/Users/r/scalaworkspace/forcomp/lib_managed/jars/org.scala-tools.testing/test-interface/test-interface-0.5.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
