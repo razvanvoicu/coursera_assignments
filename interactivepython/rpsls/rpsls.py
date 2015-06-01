@@ -1,5 +1,5 @@
 # Rock-paper-scissors-lizard-Spock solution
-# http://www.codeskulptor.org/#user40_mzxgOUogkc_0.py
+# http://www.codeskulptor.org/#user40_VPfBSamYkKf1SOE.py
 
 import random
 
@@ -48,7 +48,7 @@ def rpsls(player_choice):
     player_number = name_to_number(player_choice)
     
     # compute random guess for comp_number using random.randrange()
-    computer_number = random.randrange(0,4)
+    computer_number = random.randrange(0,5)
     
     # convert comp_number to comp_choice using the function number_to_name()
     computer_choice = number_to_name(computer_number)
