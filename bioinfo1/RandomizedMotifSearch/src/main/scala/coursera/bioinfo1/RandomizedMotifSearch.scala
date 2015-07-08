@@ -92,7 +92,7 @@ object RandomizedMotifSearch {
     var best : Array[String] = randMotifSearch(k,lines)
     println("Better: " + score(best))
     best.foreach(println _)
-    (1 to 1000).foreach {
+    (1 to 5000).foreach {
       _ =>
         val motif = randMotifSearch(k,lines)
         if (score(motif) < score(best)) {
