@@ -3,7 +3,7 @@ import scala.io.Source
 object AlignmentScore {
   def main(args: Array[String]): Unit = {
     val mtch = 1
-    val mis = 0
+    val mis = -0
     val indel = -2
     val lines = Source.stdin.getLines.toArray
     val score = lines(0).zip(lines(1)).foldLeft(0) {
