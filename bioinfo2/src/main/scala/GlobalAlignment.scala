@@ -35,6 +35,7 @@ object GlobalAlignment {
   }
 
   def main(args:Array[String]): Unit = {
+    val t1 = System.currentTimeMillis
     val scoreMatrixStream = getClass.getResourceAsStream("Blosum62.txt")
     val scoreMatrixTextLines = Source.fromInputStream(scoreMatrixStream).getLines.toArray
     val scoreMatrixRaw = scoreMatrixTextLines.tail.map(_.split("[ ]+").tail.filter(_ != "").map(_.toInt))
@@ -54,5 +55,7 @@ object GlobalAlignment {
         println(res1)
         println(res2)
     }
+    val t2 = System.currentTimeMillis
+    println("Time: " + (t2-t1))
   }
 }
