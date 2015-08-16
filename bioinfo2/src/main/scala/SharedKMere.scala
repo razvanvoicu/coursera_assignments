@@ -47,7 +47,7 @@ object SharedKMere {
     dna.zipWithIndex.foreach {
       case (s,i) => {
         s.foldLeft(List(root)) {
-          case (l, c) => root :: l.map {
+          case (l, c) => root :: l.take(2*k).map {
             n =>
               if (n.children(idx(c)) == null)
                 n.children(idx(c)) = Node()
@@ -64,7 +64,7 @@ object SharedKMere {
         for {
           x <- a
           y <- b
-        } println ((x.start,y.start))
+        } println ("(" + x.start + ", " + y.start + ")")
     }
     root = Node()
     nodeReused = 0
@@ -72,7 +72,7 @@ object SharedKMere {
     dna.zipWithIndex.foreach {
       case (s,i) => {
         s.foldLeft(List(root)) {
-          case (l, c) => root :: l.map {
+          case (l, c) => root :: l.take(2*k).map {
             n =>
               if (n.children(idx(c)) == null)
                 n.children(idx(c)) = Node()
@@ -89,7 +89,7 @@ object SharedKMere {
         for {
           x <- a
           y <- b
-        } println ((x.start,dna(1).length - y.start - k))
+        } println ("(" + x.start + ", " + (dna(1).length - y.start - k) + ")")
     }
   }
 }
