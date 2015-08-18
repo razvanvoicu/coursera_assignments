@@ -103,7 +103,7 @@ object TwoBreakSort {
       var nodeSet = Set[Int]()
       l.foreach{s => s.foreach{n => {graph(n.nodeIdx).visited = false ; nodeSet = nodeSet + n.nodeIdx}}}
       var done = false
-      var n = nodeSet.head
+      var n = nodeSet.min
       var sig = 1
       var out = ""
       var o = ""
@@ -117,9 +117,9 @@ object TwoBreakSort {
           }
         } else {
           graph(n).visited = true
-          o = o + (if (o.length>0) " " else "") + (sig * n)
-          val next = graph(n).links(if (sig == 1) 1 else 0).neighbors(0).nodeIdx
-          sig = if (graph(next).links(0).nodeIdx == n) -1 else 1
+          o = o + (if (o.length>0) " " else "") + (if (sig > 0) "+" else "") + (sig * n)
+          val next = graph(n).links(if (sig == 1) 0 else 1).neighbors(0).nodeIdx
+          sig = if (graph(next).links(0).neighbors(0).nodeIdx == n) -1 else 1
           n = next
         }
       }
@@ -129,18 +129,19 @@ object TwoBreakSort {
     val x = countCycles(links)
     var cyNum = x._1
     var cyList:List[Set[Link]] = x._2
+    println(cyclesToString(cyList))
     while (cyList.size != graph.size) {
       while(cyList.head.size == 2) cyList = cyList.tail ++ List(cyList.head)
       val h :Set[Link] = cyList.head
       cyList = cyList.tail
       val n1 = h.head
-      val n2 = n1.neighbors(0)
-      val n3 = n2.neighbors(1)
-      val n4 = n1.neighbors(1)
-      n1.neighbors(1) = n2
+      val n2 = n1.neighbors(1)
+      val n3 = n2.neighbors(0)
+      val n4 = n1.neighbors(0)
+      n1.neighbors(0) = n2
       n2.neighbors(0) = n1
-      n3.neighbors(1) = n4
-      n4.neighbors(1) = n3
+      n3.neighbors(0) = n4
+      n4.neighbors(0) = n3
       val newCy : Set[Link] = Set(n1,n2)
       cyList = h.diff(newCy) :: newCy :: cyList
       println(cyclesToString(cyList))
