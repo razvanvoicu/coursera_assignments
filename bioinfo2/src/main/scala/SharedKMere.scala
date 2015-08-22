@@ -59,12 +59,12 @@ object SharedKMere {
     }
     commonSubstring(root,k,dna.size).foreach{
       e:String =>
-        val a = e.r.findAllMatchIn(dna(0))
-        val b = e.r.findAllMatchIn(dna(1))
+        lazy val a : Stream[Int] = dna(0).indexOf(e,0) #:: a.map(i => dna(0).indexOf(e,i + 1))
+        lazy val b : Stream[Int] = dna(1).indexOf(e,0) #:: b.map(i => dna(1).indexOf(e,i + 1))
         for {
-          x <- a
-          y <- b
-        } println ("(" + x.start + ", " + y.start + ")")
+          x <- a.takeWhile(_ > 0)
+          y <- b.takeWhile(_ > 0)
+        } println ("(" + x + ", " + y + ")")
     }
     root = Node()
     nodeReused = 0
@@ -84,12 +84,12 @@ object SharedKMere {
     }
     commonSubstring(root,k,dna.size).foreach{
       e:String =>
-        val a = e.r.findAllMatchIn(dna(0))
-        val b = e.r.findAllMatchIn(dna(1))
+        lazy val a : Stream[Int] = dna(0).indexOf(e,0) #:: a.map(i => dna(0).indexOf(e,i+1))
+        lazy val b : Stream[Int] = dna(1).indexOf(e,0) #:: b.map(i => dna(1).indexOf(e,i+1))
         for {
-          x <- a
-          y <- b
-        } println ("(" + x.start + ", " + (dna(1).length - y.start - k) + ")")
+          x <- a.takeWhile(_ > 0)
+          y <- b.takeWhile(_ > 0)
+        } println ("(" + x + ", " + (dna(1).length - y - k) + ")")
     }
   }
 }
