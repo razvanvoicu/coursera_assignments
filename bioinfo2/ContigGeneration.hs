@@ -33,51 +33,37 @@ inDegrees = outDegrees . Map.fromListWith (++) . map (\(x,y)->(x,[y])) . flipPai
 unbalancedOut :: Map.Map String Int -> Map.Map String Int -> [String]
 unbalancedOut inDeg outDeg = filter f $ Map.keys outDeg
     where f x = case (Map.lookup x inDeg, Map.lookup x outDeg) of
-                    (Just a, Just b) | a < b -> True
+                    (Just a, Just b) | a < b || b > 1 -> True
                     (Nothing, Just _) -> True
                     _ -> False
 
 unbalancedIn :: Map.Map String Int -> Map.Map String Int -> [String]
 unbalancedIn inDeg outDeg = filter f $ Map.keys inDeg
     where f x = case (Map.lookup x inDeg, Map.lookup x outDeg) of
-                    (Just a, Just b) | a > b -> True
+                    (Just a, Just b) | a > b || a > 1 -> True
                     (Just _, Nothing) -> True
                     _ -> False
 
+dfs :: Int -> Map.Map String [String] -> [String] -> String -> [[String]]
+dfs k g stops v = if k > 0 && v `elem` stops
+                then [[v]]
+                else let nexts = case Map.lookup v g of
+                                    Just l -> l
+                                    Nothing -> []
+                     in  concat $ map (\n -> map (v:) $ dfs (k+1) g stops n) nexts
+
 main :: IO ()
 main = do
-    ls <- lines <$> getContents
-    let k = read $ ls !! 0 :: Int
-    let kmers = tail ls
+    kmers <- lines <$> getContents
+    let k = length $ kmers !! 0
     let prefixes = map (take (k-1)) kmers
     let suffixes = map ( (: []) . drop 1) kmers
     let c = zip prefixes suffixes
     let g = Map.fromListWith (++) c 
     let vs = Set.fromList $ prefixes ++ concat suffixes
-    let isStuck (cycle@(h:_),graph) = Map.lookup h graph == Nothing
-
-    let rotate :: ([String],Map.Map String [String]) -> [String]
-        rotate (cycle,graph) = let i = fromJust $ findIndex (\v -> Map.lookup v graph /= Nothing) cycle
-                                   (p,n:s) = splitAt i cycle
-                               in n : s ++ (if head cycle == last cycle then tail p else p) ++ [n]
-
-    let f (cycle,graph) = case graph of
-                                m | m == Map.empty -> (cycle,graph)
-                                _ -> let c = if isStuck(cycle,graph)
-                                             then rotate(cycle,graph)
-                                             else cycle
-                                         h = head c
-                                         d = last $ fromJust $ Map.lookup h graph
-                                     in (d:c,removeArc graph h d)
     let uo = unbalancedOut (inDegrees g) (outDegrees g)
         ui = unbalancedIn (inDegrees g) (outDegrees g)
-    let iter = ([head $ uo ++ Set.toList vs],g) : map f iter
-    let out' = reverse $ fst $ head $ filter (\(_,x) -> x == Map.empty) iter
-    let out = case (ui,uo) of
-                ([],[]) -> out'
-                (i:_,o:_) -> case splitOn [i,o] out' of
-                                [p,s] -> o : s ++ tail p ++ [i]
-                                _ -> out'
-                (_:_,[]) -> error "Has indeg imbalance, but no outdeg imbalance"
-                ([],_:_) -> error "Has outdeg imbalance, but no indeg imbalance"
-    putStrLn $ head out ++ map last (tail out)
+        stops = nub $ ui ++ uo
+    let paths = concat $ map (dfs 0 g stops) stops
+    let contigs = map (\p -> (map head $ take (length p - 1) p) ++ last p) paths
+    putStrLn $ intercalate "\n" contigs

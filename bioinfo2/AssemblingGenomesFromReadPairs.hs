@@ -67,7 +67,7 @@ main = do
                                              then rotate(cycle,graph)
                                              else cycle
                                          h = head c
-                                         d = head $ fromJust $ Map.lookup h graph
+                                         d = last $ fromJust $ Map.lookup h graph
                                      in (d:c,removeArc graph h d)
     let uo = unbalancedOut (inDegrees g) (outDegrees g)
         ui = unbalancedIn (inDegrees g) (outDegrees g)
@@ -80,4 +80,6 @@ main = do
                                 _ -> out'
                 (_:_,[]) -> error "Has indeg imbalance, but no outdeg imbalance"
                 ([],_:_) -> error "Has outdeg imbalance, but no indeg imbalance"
+    putStrLn $ show out
     putStrLn $ map head out ++ (drop (length out - (2*k+d)+2) $ map last out)
+    
