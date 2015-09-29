@@ -4,12 +4,12 @@ import java.util.Scanner
 object PeptideSequencingWithErrors {
   val prot = Const.mass.map(_._2).toSet
   def expand(prot:Set[Int],leaderBoard:List[List[Int]]) : List[List[Int]] = {
-    for ( p <- prot.toList; l <- leaderBoard ) yield (l ++ List(p))
+    for ( p <- prot.toList; l <- leaderBoard ) yield (p::l)
   }
   def trim(leaderBoard:List[List[Int]],spectrum:List[Int],n:Int) : List[List[Int]]  = {
     val scores = leaderBoard.map{
       l => (score(l.toArray,spectrum.toArray),l)
-    }.sortBy(_._1)
+    }.sortWith{case ((a,_),(b,_)) => a > b}
     val zipped = scores.take(scores.length-1).zip(scores.tail).zipWithIndex
     val lim = zipped.takeWhile{ case (((a,x),(b,y)),i) => i <= n || a == b }
     lim.map{case (((_,x),_),_) => x}
@@ -53,10 +53,12 @@ object PeptideSequencingWithErrors {
           if (sm == parentMass && sc > leaderScore) {
             leaderPep = pep
             leaderScore = sc
+            println(leaderPep.mkString("-"))
           }
           sm <= parentMass
       }
-      leaderBoard = trim(leaderBoard,experimental,n)
+      if (leaderBoard.length > n)
+        leaderBoard = trim(leaderBoard,experimental,n)
     }
     println(leaderPep.mkString("-"))
   }
