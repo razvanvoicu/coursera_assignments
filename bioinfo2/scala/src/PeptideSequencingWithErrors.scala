@@ -3,17 +3,26 @@ import java.util.Scanner
 
 object PeptideSequencingWithErrors {
   val prot = Const.mass.map(_._2).toSet
+
+  def spectrum(pep:List[Int]) : List[Int] = {
+    val sp : List[List[Int]] = List() :: (pep.tails.toList.flatMap(_.inits).filter(_.length > 0))
+    sp.map(_.sum).sorted
+  }
+
   def expand(prot:Set[Int],leaderBoard:List[List[Int]]) : List[List[Int]] = {
     for ( p <- prot.toList; l <- leaderBoard ) yield (p::l)
   }
-  def trim(leaderBoard:List[List[Int]],spectrum:List[Int],n:Int) : List[List[Int]]  = {
+
+  def trim(leaderBoard:List[List[Int]],pep:List[Int],n:Int) : List[List[Int]]  = {
     val scores = leaderBoard.map{
-      l => (score(l.toArray,spectrum.toArray),l)
+      l =>
+        (score(spectrum(l).toArray,pep.toArray),l)
     }.sortWith{case ((a,_),(b,_)) => a > b}
     val zipped = scores.take(scores.length-1).zip(scores.tail).zipWithIndex
     val lim = zipped.takeWhile{ case (((a,x),(b,y)),i) => i <= n || a == b }
     lim.map{case (((_,x),_),_) => x}
   }
+
   def score(a:Array[Int], b:Array[Int]) : Int = {
     var i = 0;
     var j = 0;
@@ -31,35 +40,40 @@ object PeptideSequencingWithErrors {
     }
     score
   }
+
   val massLookup : Map[Char,Int] = Const.mass.toMap
+
   def main(args: Array[String]) : Unit = {
     val input = Source.stdin.getLines.toArray
     val n = (new Scanner(input(0))).nextInt
     val scanner = new Scanner(input(1))
+
     val experimental = Stream.iterate((scanner.nextInt, true, scanner.hasNextInt)) {
       p => if (p._3) (scanner.nextInt, p._3, scanner.hasNextInt) else (0, false, false)
     }.takeWhile(_._2).map(_._1).toList
     val expProt = prot.intersect(experimental.toSet)
+
     var leaderScore = -1
     var leaderPep = List[Int]()
     var leaderBoard = List(List[Int]())
     val parentMass = experimental.last
+
     while(! leaderBoard.isEmpty ) {
       leaderBoard = expand(expProt,leaderBoard)
       leaderBoard = leaderBoard.filter{
         pep => 
-          val sc = score(pep.toArray,experimental.toArray)
+          val sc = score(spectrum(pep).toArray,experimental.toArray)
           val sm = pep.sum
           if (sm == parentMass && sc > leaderScore) {
             leaderPep = pep
             leaderScore = sc
-            println(leaderPep.mkString("-"))
           }
           sm <= parentMass
       }
       if (leaderBoard.length > n)
         leaderBoard = trim(leaderBoard,experimental,n)
     }
-    println(leaderPep.mkString("-"))
+
+    println(leaderPep.reverse.mkString("-"))
   }
 }
