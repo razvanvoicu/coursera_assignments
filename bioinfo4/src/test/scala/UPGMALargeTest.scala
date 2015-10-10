@@ -1,11 +1,6 @@
 import org.scalatest._
 
-class UPGMALargeTest extends FlatSpec with Matchers {
-
-  def mapEq(a:Map[(Int,Int),Double],b:Map[(Int,Int),Double]) : Boolean = {
-    (a.keys.toSet == b.keys.toSet) &&
-      (a.forall{case ((i,j),v) => Math.abs(v - b((i,j))) < 0.0001})
-  }
+class UPGMALargeTest extends FlatSpec with Matchers with MapEquality {
 
   it should "pass the test" in {
     val inp =
@@ -149,6 +144,6 @@ class UPGMALargeTest extends FlatSpec with Matchers {
         .map(_.split("->|:") match {case Array(s1,s2,s3) => ((s1.toInt,s2.toInt) -> s3.toDouble)})
         .toMap )
 
-    mapEq(UPGMA.upgma(inp.lines), res)
+    mapEq(UPGMA.upgma(inp.lines), res) should be (true)
   }
 }

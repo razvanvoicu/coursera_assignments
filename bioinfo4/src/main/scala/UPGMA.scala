@@ -1,5 +1,4 @@
 import java.util.Scanner
-
 import scala.io.Source
 
 object UPGMA {
@@ -26,7 +25,7 @@ object UPGMA {
       ((n1,n2),ln) <- q
       ((m1,m2),lm) <- q
       if n1 == c._1 && m1 == c._2 && m2 == n2 && m2 != c._1 && n2 != c._2
-      val d = (ln*s(n1)+lm*s(m1))/size
+      d = (ln*s(n1)+lm*s(m1))/size
       x <- List(((k,n2),d),((n2,k),d))
     } yield x
     a + ((k,k) -> 0.0)
@@ -64,7 +63,7 @@ object UPGMA {
         val te = treeEdges(a,age._2,k,c)
         (a + age, s+size, p ++ edg,r ++ te)
     }._4.map{
-      case ((i,j),v) => ((i,j),(v * 100).toInt/100.0)
+      case ((i,j),v) => ((i,j),v)
     }
   }
 }
