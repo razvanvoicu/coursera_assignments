@@ -8,8 +8,8 @@ object SmallParsimony {
     'T' -> Long.MaxValue)
   def smallParsimony(lines: Array[String]) : String = {
     val n = lines(0).toInt
-    val (_,tree) = lines.tail.foldLeft((0,Map[Int,List[(Int,Array[Map[Char,Long]])]]())) {
-      case ((cnt,m),s) =>
+    val (lgth,_,tree) = lines.tail.foldLeft((0,0,Map[Int,List[(Int,Array[Map[Char,Long]])]]())) {
+      case ((lgth,cnt,m),s) =>
         val edge = s.split("->")
         val destTry = Try(edge(1).toInt)
         val destInt = destTry.getOrElse(cnt)
@@ -17,7 +17,7 @@ object SmallParsimony {
         val add = if (destTry.isFailure) 1 else 0
         val k = edge(0).toInt
         val existing = m.getOrElse(k,List())
-        (cnt + add, m + ((k,existing :+ ((destInt,destStr.toCharArray.map { c => nucl + (c -> 0L) })))))
+        (lgth + 1, cnt + add, m + ((k,existing :+ ((destInt,destStr.toCharArray.map { c => nucl + (c -> 0L) })))))
     }
     tree.foreach{
       case (k,a) =>
@@ -29,6 +29,16 @@ object SmallParsimony {
           println("]]]")
         }
     }
+    sealed trait Node
+    case class Leaf(val key: Int, val dna: Array[Map[Char,Long]]) extends Node
+    case class Inner(val key:Int, val dna: Array[Map[Char,Long]], val left: Node, val right: Node) extends Node
+
+/*    val nodes = (0 until lgth).map {
+      k => tree.get(k) match {
+        case None => (k,Leaf(k,Array()))
+        case Some(i,m) => (k,)
+      }
+    } */
     ""
   }
 }
