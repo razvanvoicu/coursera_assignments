@@ -28,6 +28,7 @@ class SmallParsimonySmallTest extends FlatSpec with Matchers {
     |CAAATCCC->ATAGCCAC:5""".stripMargin
 
   it should "pass the test" in {
+    println(smallParsimony(testInput.split(System.getProperty("line.separator"))))
     smallParsimony(testInput.split(System.getProperty("line.separator"))) shouldBe testExpectedOutput
   }
 }
