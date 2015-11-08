@@ -4,7 +4,7 @@ import scala.util.{Failure, Success, Try}
 object SmallParsimony {
   def main(args: Array[String]) : Unit = {
     val lines = Source.stdin.getLines.toArray
-    println(smallParsimony(lines))
+    println(unrooted(lines))
   }
 
   val nucl = Map(
@@ -12,6 +12,30 @@ object SmallParsimony {
     'C' -> Long.MaxValue/2,
     'G' -> Long.MaxValue/2,
     'T' -> Long.MaxValue/2)
+
+  def unrooted(lines: Array[String]) : String = {
+    val n = (lines.size-1) / 2
+    val l = lines.filter(s => s != (n + "->" + (n-1)) || s != ((n-1) + "->" + n)) ++
+              Array((n+1)+"->"+(n-1),(n+1)+"->"+n)
+    val sp = smallParsimony(l).split("\n")
+    val t = sp.drop(sp.size - 4)
+    val p = t.map(s => s.split(":")(1).toInt).sum / 2
+    val d = t.flatMap(s => s.split("(->)|:").take(2)).groupBy(identity)
+    val rootRemoved = () match {
+      case _ if d.size == 3 =>
+        val nodes = d.filter{case (k,v) => v.size != 4}.keys.iterator
+        val n0 = nodes.next
+        val n1 = nodes.next
+        Array(n0 + "->" + n1 + ":" + p, n1 + "->" + n0 + ":" + p)
+      case _ if d.size == 2 =>
+        val nodes = d.keys.iterator
+        val n0 = nodes.next
+        val n1 = nodes.next
+        Array(n0 + "->" + n1 + ":" + p, n1 + "->" + n0 + ":" + p)
+    }
+    (sp.take(sp.size - 4) ++ rootRemoved).mkString("\n")
+  }
+
   def smallParsimony(lines: Array[String]) : String = {
     val leaves = lines(0).toInt
     val (dnaLgth,_,tree) = lines.tail.foldLeft((0,0,Map[Int,List[(Int,Array[Map[Char,Long]])]]())) {
